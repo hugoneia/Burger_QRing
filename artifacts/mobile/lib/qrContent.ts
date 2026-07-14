@@ -76,13 +76,13 @@ export function replaceDateBlock(parts: StructuredCodeParts, date: Date): string
 function parseWifi(content: string): string {
   const ssidMatch = content.match(/S:([^;]*);/);
   const ssid = ssidMatch?.[1];
-  return ssid ? `Network "${ssid}"` : 'Wi-Fi network credentials';
+  return ssid ? `Red "${ssid}"` : 'Credenciales de red Wi-Fi';
 }
 
 function parseVCard(content: string): string {
   const nameMatch = content.match(/FN:([^\r\n]*)/i) ?? content.match(/N:([^\r\n]*)/i);
   const name = nameMatch?.[1]?.trim();
-  return name ? `Contact card for ${name}` : 'Contact card';
+  return name ? `Tarjeta de contacto de ${name}` : 'Tarjeta de contacto';
 }
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -95,14 +95,14 @@ export function analyzeQrContent(raw: string): QrAnalysis {
   const content = raw.trim();
 
   if (!content) {
-    return { type: 'text', label: 'Empty', icon: 'type', detail: 'No content yet' };
+    return { type: 'text', label: 'Vacío', icon: 'type', detail: 'Sin contenido todavía' };
   }
 
   const structured = parseStructuredCode(content);
   if (structured) {
     const { date } = structured;
     const detail = `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
-    return { type: 'structured-code', label: 'Coded record', icon: 'hash', detail };
+    return { type: 'structured-code', label: 'Registro codificado', icon: 'hash', detail };
   }
 
   if (/^https?:\/\//i.test(content) || /^www\./i.test(content)) {
@@ -112,25 +112,25 @@ export function analyzeQrContent(raw: string): QrAnalysis {
     } catch {
       // keep raw content as fallback
     }
-    return { type: 'url', label: 'Website link', icon: 'link', detail: host };
+    return { type: 'url', label: 'Enlace web', icon: 'link', detail: host };
   }
 
   if (/^mailto:/i.test(content)) {
     return {
       type: 'email',
-      label: 'Email address',
+      label: 'Correo electrónico',
       icon: 'mail',
       detail: content.replace(/^mailto:/i, ''),
     };
   }
   if (EMAIL_REGEX.test(content)) {
-    return { type: 'email', label: 'Email address', icon: 'mail', detail: content };
+    return { type: 'email', label: 'Correo electrónico', icon: 'mail', detail: content };
   }
 
   if (/^tel:/i.test(content)) {
     return {
       type: 'phone',
-      label: 'Phone number',
+      label: 'Número de teléfono',
       icon: 'phone',
       detail: content.replace(/^tel:/i, ''),
     };
@@ -139,29 +139,29 @@ export function analyzeQrContent(raw: string): QrAnalysis {
   if (/^smsto:|^sms:/i.test(content)) {
     return {
       type: 'sms',
-      label: 'Text message',
+      label: 'Mensaje de texto',
       icon: 'message-square',
       detail: content.replace(/^smsto:|^sms:/i, ''),
     };
   }
 
   if (/^WIFI:/i.test(content)) {
-    return { type: 'wifi', label: 'Wi-Fi network', icon: 'wifi', detail: parseWifi(content) };
+    return { type: 'wifi', label: 'Red Wi-Fi', icon: 'wifi', detail: parseWifi(content) };
   }
 
   if (/^BEGIN:VCARD/i.test(content)) {
-    return { type: 'vcard', label: 'Contact card', icon: 'user', detail: parseVCard(content) };
+    return { type: 'vcard', label: 'Tarjeta de contacto', icon: 'user', detail: parseVCard(content) };
   }
 
   if (/^geo:/i.test(content)) {
     return {
       type: 'geo',
-      label: 'Map location',
+      label: 'Ubicación',
       icon: 'map-pin',
       detail: content.replace(/^geo:/i, ''),
     };
   }
 
   const preview = content.length > 60 ? `${content.slice(0, 60)}…` : content;
-  return { type: 'text', label: 'Plain text', icon: 'type', detail: preview };
+  return { type: 'text', label: 'Texto sin formato', icon: 'type', detail: preview };
 }

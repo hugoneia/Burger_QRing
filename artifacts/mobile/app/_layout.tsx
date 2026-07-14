@@ -25,7 +25,7 @@ function RootLayoutNav() {
   return (
     <Stack
       screenOptions={{
-        headerBackTitle: 'Back',
+        headerBackTitle: 'Atrás',
         headerStyle: { backgroundColor: colors.card },
         headerTintColor: colors.primary,
         headerTitleStyle: { color: colors.foreground },
@@ -33,7 +33,7 @@ function RootLayoutNav() {
       }}
     >
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="result" options={{ title: 'Edit & Generate' }} />
+      <Stack.Screen name="result" options={{ title: 'Editar y generar' }} />
     </Stack>
   );
 }

@@ -7,7 +7,7 @@ import { useColors } from '@/hooks/useColors';
 interface Props {
   /** The current value of the date/time block, decoded as a local Date. */
   value: Date;
-  /** Called with the next Date whenever the user changes date, time, or seconds. */
+  /** Called with the next Date whenever the user changes the date or time. */
   onChange: (next: Date) => void;
 }
 
@@ -20,15 +20,17 @@ function formatDate(value: Date): string {
 }
 
 function formatTime(value: Date): string {
-  return `${pad(value.getHours())}:${pad(value.getMinutes())}:${pad(value.getSeconds())}`;
+  return `${pad(value.getHours())}:${pad(value.getMinutes())}`;
 }
 
 /**
  * Lets the user change the date and time encoded in a single QR content
- * block, leaving the rest of the record untouched. Uses native calendar/
- * clock pickers on iOS and Android; on web (where the native picker module
- * has no implementation) it falls back to plain, validated text fields so
- * the flow still works during development/testing in the browser preview.
+ * block, leaving the rest of the record untouched. Seconds are not
+ * editable and are always normalized to 00 whenever the date or time is
+ * changed. Uses native calendar/clock pickers on iOS and Android; on web
+ * (where the native picker module has no implementation) it falls back to
+ * plain, validated text fields so the flow still works during
+ * development/testing in the browser preview.
  */
 export function RecordDateTimePicker({ value, onChange }: Props) {
   const colors = useColors();
@@ -47,17 +49,13 @@ export function RecordDateTimePicker({ value, onChange }: Props) {
   const combineDate = (picked: Date) => {
     const next = new Date(value);
     next.setFullYear(picked.getFullYear(), picked.getMonth(), picked.getDate());
+    next.setSeconds(0);
     return next;
   };
   const combineTime = (picked: Date) => {
     const next = new Date(value);
-    next.setHours(picked.getHours(), picked.getMinutes(), value.getSeconds());
+    next.setHours(picked.getHours(), picked.getMinutes(), 0);
     return next;
-  };
-  const adjustSeconds = (delta: number) => {
-    const next = new Date(value);
-    next.setSeconds((next.getSeconds() + delta + 60) % 60);
-    onChange(next);
   };
 
   const openDate = () => {
@@ -101,11 +99,11 @@ export function RecordDateTimePicker({ value, onChange }: Props) {
 
   const handleTimeTextChange = (text: string) => {
     setTimeText(text);
-    const match = text.match(/^(\d{2}):(\d{2}):(\d{2})$/);
+    const match = text.match(/^(\d{2}):(\d{2})$/);
     if (!match) return;
-    const [, h, mi, s] = match;
+    const [, h, mi] = match;
     const next = new Date(value);
-    next.setHours(Number(h), Number(mi), Number(s));
+    next.setHours(Number(h), Number(mi), 0);
     if (!Number.isNaN(next.getTime())) onChange(next);
   };
 
@@ -144,7 +142,7 @@ export function RecordDateTimePicker({ value, onChange }: Props) {
             <TextInput
               value={timeText}
               onChangeText={handleTimeTextChange}
-              placeholder="HH:MM:SS"
+              placeholder="HH:MM"
               placeholderTextColor={colors.mutedForeground}
               style={[styles.chipInput, { color: colors.foreground }]}
               testID="time-field"
@@ -159,31 +157,6 @@ export function RecordDateTimePicker({ value, onChange }: Props) {
           </Pressable>
         )}
       </View>
-
-      {Platform.OS !== 'web' && (
-        <View style={styles.secondsRow}>
-          <Text style={[styles.secondsLabel, { color: colors.mutedForeground }]}>SECONDS</Text>
-          <View style={styles.secondsControls}>
-            <Pressable
-              onPress={() => adjustSeconds(-1)}
-              style={[styles.stepperButton, { borderColor: colors.border }]}
-              testID="seconds-minus"
-            >
-              <Feather name="minus" size={14} color={colors.foreground} />
-            </Pressable>
-            <Text style={[styles.secondsValue, { color: colors.foreground }]}>
-              {pad(value.getSeconds())}
-            </Text>
-            <Pressable
-              onPress={() => adjustSeconds(1)}
-              style={[styles.stepperButton, { borderColor: colors.border }]}
-              testID="seconds-plus"
-            >
-              <Feather name="plus" size={14} color={colors.foreground} />
-            </Pressable>
-          </View>
-        </View>
-      )}
 
       {Platform.OS === 'ios' && showDate && (
         <DateTimePicker
@@ -237,34 +210,5 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
     padding: 0,
-  },
-  secondsRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  secondsLabel: {
-    fontSize: 12,
-    fontWeight: '700',
-    letterSpacing: 0.4,
-  },
-  secondsControls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  stepperButton: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  secondsValue: {
-    fontSize: 15,
-    fontWeight: '700',
-    minWidth: 28,
-    textAlign: 'center',
   },
 });

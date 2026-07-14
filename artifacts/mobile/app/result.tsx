@@ -1,35 +1,22 @@
 import React, { useMemo, useState } from 'react';
-import {
-  Alert,
-  Platform,
-  Pressable,
-  Share,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollViewCompat } from '@/components/KeyboardAwareScrollViewCompat';
 import { useLocalSearchParams, router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
-import * as Clipboard from 'expo-clipboard';
 import * as Haptics from 'expo-haptics';
 import { useColors } from '@/hooks/useColors';
 import { QRCodeCard } from '@/components/QRCodeCard';
 import { RecordDateTimePicker } from '@/components/RecordDateTimePicker';
-import { analyzeQrContent, parseStructuredCode, replaceDateBlock } from '@/lib/qrContent';
+import { parseStructuredCode, replaceDateBlock } from '@/lib/qrContent';
 
 export default function ResultScreen() {
   const colors = useColors();
   const params = useLocalSearchParams<{ content?: string }>();
   const original = params.content ?? '';
   const [content, setContent] = useState(original);
-  const [copied, setCopied] = useState(false);
 
-  const analysis = useMemo(() => analyzeQrContent(content), [content]);
   const structured = useMemo(() => parseStructuredCode(content), [content]);
   const isEdited = content !== original;
-  const isEmpty = content.trim().length === 0;
 
   const handleDateTimeChange = (next: Date) => {
     if (!structured) return;
@@ -39,23 +26,11 @@ export default function ResultScreen() {
     }
   };
 
-  const handleCopy = async () => {
-    if (isEmpty) return;
-    await Clipboard.setStringAsync(content);
-    if (Platform.OS !== 'web') {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    }
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1600);
-  };
-
-  const handleShare = async () => {
-    if (isEmpty) return;
-    try {
-      await Share.share({ message: content });
-    } catch {
-      Alert.alert('Could not share', 'Something went wrong while sharing this content.');
-    }
+  const handleSetNow = () => {
+    if (!structured) return;
+    const now = new Date();
+    now.setSeconds(0);
+    handleDateTimeChange(now);
   };
 
   const handleReset = () => {
@@ -75,44 +50,13 @@ export default function ResultScreen() {
       contentContainerStyle={styles.content}
       keyboardShouldPersistTaps="handled"
     >
-      <View
-        style={[
-          styles.analysisCard,
-          { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius },
-        ]}
-      >
-        <View style={[styles.analysisIcon, { backgroundColor: colors.accent }]}>
-          <Feather name={analysis.icon} size={20} color={colors.primary} />
-        </View>
-        <View style={styles.analysisTextWrap}>
-          <Text style={[styles.analysisLabel, { color: colors.foreground }]}>{analysis.label}</Text>
-          <Text style={[styles.analysisDetail, { color: colors.mutedForeground }]} numberOfLines={1}>
-            {analysis.detail}
-          </Text>
-        </View>
-        {isEdited && (
-          <View style={[styles.editedPill, { backgroundColor: colors.accent }]}>
-            <Text style={[styles.editedPillText, { color: colors.primary }]}>Edited</Text>
-          </View>
-        )}
-      </View>
-
-      {structured && (
-        <View style={styles.section}>
-          <Text style={[styles.sectionLabel, { color: colors.mutedForeground }]}>
-            DATE & TIME OF THE RECORD
-          </Text>
-          <RecordDateTimePicker value={structured.date} onChange={handleDateTimeChange} />
-        </View>
-      )}
-
       <View style={styles.section}>
-        <Text style={[styles.sectionLabel, { color: colors.mutedForeground }]}>CONTENT</Text>
+        <Text style={[styles.sectionLabel, { color: colors.mutedForeground }]}>CONTENIDO</Text>
         <TextInput
           value={content}
           onChangeText={setContent}
           multiline
-          placeholder="QR content"
+          placeholder="Contenido del QR"
           placeholderTextColor={colors.mutedForeground}
           style={[
             styles.textInput,
@@ -127,51 +71,44 @@ export default function ResultScreen() {
         />
         <View style={styles.inputFooter}>
           <Text style={[styles.charCount, { color: colors.mutedForeground }]}>
-            {content.length} characters
+            {content.length} caracteres
           </Text>
           {isEdited && (
             <Pressable onPress={handleReset} style={styles.resetLink} testID="reset-button">
               <Feather name="rotate-ccw" size={13} color={colors.primary} />
-              <Text style={[styles.resetLinkText, { color: colors.primary }]}>Reset</Text>
+              <Text style={[styles.resetLinkText, { color: colors.primary }]}>Restablecer</Text>
             </Pressable>
           )}
         </View>
       </View>
 
+      {structured && (
+        <View style={styles.section}>
+          <Text style={[styles.sectionLabel, { color: colors.mutedForeground }]}>
+            FECHA Y HORA DEL REGISTRO
+          </Text>
+          <RecordDateTimePicker value={structured.date} onChange={handleDateTimeChange} />
+          <Pressable
+            onPress={handleSetNow}
+            style={[
+              styles.nowButton,
+              { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius },
+            ]}
+            testID="set-now-button"
+          >
+            <Feather name="refresh-cw" size={16} color={colors.primary} />
+            <Text style={[styles.nowButtonText, { color: colors.foreground }]}>
+              Fecha/Hora Actual
+            </Text>
+          </Pressable>
+        </View>
+      )}
+
       <View style={styles.section}>
-        <Text style={[styles.sectionLabel, { color: colors.mutedForeground }]}>NEW QR CODE</Text>
+        <Text style={[styles.sectionLabel, { color: colors.mutedForeground }]}>CÓDIGO QR</Text>
         <View style={styles.qrCenter}>
           <QRCodeCard value={content} />
         </View>
-      </View>
-
-      <View style={styles.actionsRow}>
-        <Pressable
-          onPress={handleCopy}
-          disabled={isEmpty}
-          style={[
-            styles.actionButton,
-            { backgroundColor: colors.card, borderColor: colors.border, opacity: isEmpty ? 0.4 : 1 },
-          ]}
-          testID="copy-button"
-        >
-          <Feather name={copied ? 'check' : 'copy'} size={18} color={colors.primary} />
-          <Text style={[styles.actionButtonText, { color: colors.foreground }]}>
-            {copied ? 'Copied' : 'Copy'}
-          </Text>
-        </Pressable>
-        <Pressable
-          onPress={handleShare}
-          disabled={isEmpty}
-          style={[
-            styles.actionButton,
-            { backgroundColor: colors.card, borderColor: colors.border, opacity: isEmpty ? 0.4 : 1 },
-          ]}
-          testID="share-button"
-        >
-          <Feather name="share-2" size={18} color={colors.primary} />
-          <Text style={[styles.actionButtonText, { color: colors.foreground }]}>Share</Text>
-        </Pressable>
       </View>
 
       <Pressable
@@ -180,7 +117,9 @@ export default function ResultScreen() {
         testID="scan-again-button"
       >
         <Feather name="camera" size={18} color={colors.primaryForeground} />
-        <Text style={[styles.scanAgainText, { color: colors.primaryForeground }]}>Scan another code</Text>
+        <Text style={[styles.scanAgainText, { color: colors.primaryForeground }]}>
+          Escanear nuevo código
+        </Text>
       </Pressable>
     </KeyboardAwareScrollViewCompat>
   );
@@ -191,40 +130,6 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingBottom: 40,
     gap: 24,
-  },
-  analysisCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    padding: 14,
-    gap: 12,
-  },
-  analysisIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  analysisTextWrap: {
-    flex: 1,
-    gap: 2,
-  },
-  analysisLabel: {
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  analysisDetail: {
-    fontSize: 13,
-  },
-  editedPill: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 100,
-  },
-  editedPillText: {
-    fontSize: 11,
-    fontWeight: '700',
   },
   section: {
     gap: 10,
@@ -258,26 +163,20 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
   },
-  qrCenter: {
-    alignItems: 'center',
-  },
-  actionsRow: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  actionButton: {
-    flex: 1,
+  nowButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
     borderWidth: 1,
-    borderRadius: 100,
-    paddingVertical: 14,
+    paddingVertical: 12,
   },
-  actionButtonText: {
-    fontSize: 15,
+  nowButtonText: {
+    fontSize: 14,
     fontWeight: '600',
+  },
+  qrCenter: {
+    alignItems: 'center',
   },
   scanAgainButton: {
     flexDirection: 'row',

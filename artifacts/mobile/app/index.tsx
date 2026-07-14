@@ -68,7 +68,7 @@ export default function ScannerScreen() {
       return (
         <View style={styles.centerFill}>
           <Text style={[styles.hintText, { color: colors.mutedForeground }]}>
-            Checking camera access…
+            Comprobando acceso a la cámara…
           </Text>
         </View>
       );
@@ -82,12 +82,12 @@ export default function ScannerScreen() {
             <Feather name="camera" size={30} color={colors.primary} />
           </View>
           <Text style={[styles.permissionTitle, { color: colors.foreground }]}>
-            Camera access needed
+            Se necesita acceso a la cámara
           </Text>
           <Text style={[styles.permissionBody, { color: colors.mutedForeground }]}>
             {canAsk
-              ? 'Allow camera access to scan QR codes and read what they contain.'
-              : 'Camera access was denied. Enable it in Settings to start scanning.'}
+              ? 'Permite el acceso a la cámara para escanear códigos QR y leer su contenido.'
+              : 'Se denegó el acceso a la cámara. Actívalo en Ajustes para empezar a escanear.'}
           </Text>
           <Pressable
             onPress={canAsk ? requestPermission : openSettings}
@@ -97,7 +97,7 @@ export default function ScannerScreen() {
             ]}
           >
             <Text style={[styles.primaryButtonText, { color: colors.primaryForeground }]}>
-              {canAsk ? 'Allow camera access' : 'Open Settings'}
+              {canAsk ? 'Permitir acceso a la cámara' : 'Abrir Ajustes'}
             </Text>
           </Pressable>
         </View>
@@ -132,14 +132,14 @@ export default function ScannerScreen() {
             <View style={styles.overlayDimSide} />
           </View>
           <View style={styles.overlayBottomDim}>
-            <Text style={styles.helperText}>Align a QR code within the frame</Text>
+            <Text style={styles.helperText}>Encuadra un código QR dentro del marco</Text>
           </View>
         </View>
       )}
 
       <View style={[styles.topBar, { paddingTop: insets.top + 12 }]}>
         <Text style={[styles.title, { color: hasCamera ? '#F4FBF8' : colors.foreground }]}>
-          Scan QR Code
+          Escanear código QR
         </Text>
         {hasCamera && (
           <Pressable
@@ -169,7 +169,7 @@ export default function ScannerScreen() {
             <TextInput
               value={manualText}
               onChangeText={setManualText}
-              placeholder="Type or paste content"
+              placeholder="Escribe o pega el contenido"
               placeholderTextColor={colors.mutedForeground}
               style={[
                 styles.manualInput,
@@ -194,7 +194,7 @@ export default function ScannerScreen() {
                 testID="manual-cancel"
               >
                 <Text style={[styles.secondaryButtonText, { color: colors.mutedForeground }]}>
-                  Cancel
+                  Cancelar
                 </Text>
               </Pressable>
               <Pressable
@@ -207,7 +207,7 @@ export default function ScannerScreen() {
                 testID="manual-submit"
               >
                 <Text style={[styles.primaryButtonText, { color: colors.primaryForeground }]}>
-                  Continue
+                  Continuar
                 </Text>
               </Pressable>
             </View>
@@ -220,7 +220,7 @@ export default function ScannerScreen() {
           >
             <Feather name="edit-3" size={16} color={colors.primary} />
             <Text style={[styles.manualEntryText, { color: colors.primary }]}>
-              Enter content manually
+              Introducir contenido manualmente
             </Text>
           </Pressable>
         )}
