@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "QR Scan & Edit",
-    "slug": "mobile",
+    "name": "BK Free Drink",
+    "slug": "bkfreedrink",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "mobile",
+    "scheme": "bkfreedrink",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
@@ -14,9 +14,12 @@
       "backgroundColor": "#0B0F0E"
     },
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "bundleIdentifier": "com.bkfreedrink.app"
     },
-    "android": {},
+    "android": {
+      "package": "com.bkfreedrink.app"
+    },
     "web": {
       "favicon": "./assets/images/icon.png"
     },
@@ -34,7 +37,8 @@
         {
           "cameraPermission": "Allow QR Scan & Edit to use the camera to scan QR codes."
         }
-      ]
+      ],
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true,

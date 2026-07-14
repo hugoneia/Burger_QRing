@@ -16,7 +16,8 @@ import * as Clipboard from 'expo-clipboard';
 import * as Haptics from 'expo-haptics';
 import { useColors } from '@/hooks/useColors';
 import { QRCodeCard } from '@/components/QRCodeCard';
-import { analyzeQrContent } from '@/lib/qrContent';
+import { RecordDateTimePicker } from '@/components/RecordDateTimePicker';
+import { analyzeQrContent, parseStructuredCode, replaceDateBlock } from '@/lib/qrContent';
 
 export default function ResultScreen() {
   const colors = useColors();
@@ -26,8 +27,17 @@ export default function ResultScreen() {
   const [copied, setCopied] = useState(false);
 
   const analysis = useMemo(() => analyzeQrContent(content), [content]);
+  const structured = useMemo(() => parseStructuredCode(content), [content]);
   const isEdited = content !== original;
   const isEmpty = content.trim().length === 0;
+
+  const handleDateTimeChange = (next: Date) => {
+    if (!structured) return;
+    setContent(replaceDateBlock(structured, next));
+    if (Platform.OS !== 'web') {
+      Haptics.selectionAsync();
+    }
+  };
 
   const handleCopy = async () => {
     if (isEmpty) return;
@@ -86,6 +96,15 @@ export default function ResultScreen() {
           </View>
         )}
       </View>
+
+      {structured && (
+        <View style={styles.section}>
+          <Text style={[styles.sectionLabel, { color: colors.mutedForeground }]}>
+            DATE & TIME OF THE RECORD
+          </Text>
+          <RecordDateTimePicker value={structured.date} onChange={handleDateTimeChange} />
+        </View>
+      )}
 
       <View style={styles.section}>
         <Text style={[styles.sectionLabel, { color: colors.mutedForeground }]}>CONTENT</Text>
