@@ -1,6 +1,6 @@
 workflows:
   android-apk-build:
-    name: Traffic Monitor APK Build
+    name: BK Free Drink APK Build
     max_build_duration: 60
     instance_type: mac_mini_m1
     environment:
