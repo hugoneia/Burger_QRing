@@ -13,6 +13,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    # Otorgamos permisos de escritura al token de GitHub para que pueda subir el lockfile corregido
+    permissions:
+      contents: write
+
     steps:
       # 1. Traer el código del repositorio
       - name: Checkout repository
@@ -31,12 +35,21 @@ jobs:
           version: 9
           run_install: false
 
-      # 4. Eliminar lockfile antiguo e instalar dependencias de cero
-      - name: Clean lockfile and Install dependencies
+      # 4. Eliminar lockfile antiguo, regenerarlo correctamente de cero y sincronizar el repositorio
+      - name: Sincronizar y actualizar lockfile de pnpm
         run: |
           rm -f pnpm-lock.yaml
           pnpm store prune
           pnpm install --no-frozen-lockfile
+          
+          # Configurar Git para subir los cambios automáticos del lockfile si hay diferencias
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain pnpm-lock.yaml)" ]; then
+            git add pnpm-lock.yaml
+            git commit -m "chore: actualizar pnpm-lock.yaml automáticamente [skip ci]"
+            git push
+          fi
 
       # 5. Compilar el proyecto raíz de forma limpia y recursiva
       - name: Build workspace project
@@ -57,6 +70,5 @@ jobs:
       - name: Build APK (EAS Build)
         run: |
           cd artifacts/mobile
-          # Vinculamos a la fuerza el ID del proyecto antes de compilar
           eas init --id "bd51507e-7270-4923-8b4d-81351a516a8a" --non-interactive
           eas build --platform android --profile preview --non-interactive
