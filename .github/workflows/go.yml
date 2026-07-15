@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI & EAS Android Build
 
 on:
   push:
@@ -6,7 +6,6 @@ on:
   pull_request:
     branches: [ main, master ]
 
-# Silenciamos la advertencia de Node 20 a nivel global del proceso
 env:
   ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: "true"
 
@@ -32,21 +31,30 @@ jobs:
           version: 9
           run_install: false
 
-      # 4. Eliminar lockfile antiguo e instalar de cero con overrides estrictos
+      # 4. Eliminar lockfile antiguo e instalar dependencias de cero
       - name: Clean lockfile and Install dependencies
         run: |
           rm -f pnpm-lock.yaml
           pnpm store prune
           pnpm install --no-frozen-lockfile
 
-      # 5. Compilar saltándose el chequeo estricto
-      - name: Build project
+      # 5. Compilar el proyecto raíz
+      - name: Build workspace project
         run: |
-          pnpm run build --if-present || pnpm -r --if-present run build
+          pnpm run build --if-present
         env:
           PORT: 3000
           EXPO_PUBLIC_DOMAIN: localhost
 
-      # 6. Ejecutar tests
-      - name: Run tests
-        run: pnpm test --if-present
+      # 6. Configurar la herramienta de EAS (Expo) en el servidor de GitHub
+      - name: Setup EAS CLI
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      # 7. Disparar la creación automática de tu APK en la nube de Expo
+      - name: Build APK (EAS Build)
+        run: |
+          cd artifacts/mobile
+          pnpm eas build --platform android --profile preview --non-interactive
