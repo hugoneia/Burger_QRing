@@ -35,7 +35,7 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow QR Scan & Edit to use the camera to scan QR codes."
+          "cameraPermission": "Permitir el uso de la cámara para leer códigos QR."
         }
       ],
       "@react-native-community/datetimepicker"
@@ -43,6 +43,11 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bd51507e-7270-4923-8b4d-81351a516a8a"
+      }
     }
   }
 }
