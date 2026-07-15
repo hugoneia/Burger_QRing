@@ -25,7 +25,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.13' # Versión estable recomendada
+          node-version: '24' # Versión estable recomendada
           cache: 'pnpm'
 
       # 4. Instala las dependencias ignorando scripts problemáticos
