@@ -1,36 +1,37 @@
-name: Node & PNPM CI
+name: CI Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, master ]
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Descarga el código de tu repositorio
+      # 1. Traer el código del repositorio
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Instala pnpm de forma automática
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: latest
-
-      # 3. Configura Node.js v24
+      # 2. Configurar la versión de Node.js actual (Node 24)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: 'pnpm'
 
-      # 4. Instala las dependencias ignorando scripts problemáticos
+      # 3. Instalar pnpm en el entorno virtual
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      # 4. Instalar dependencias limpiando tipos antiguos
       - name: Install dependencies
-        run: pnpm install --ignore-scripts
+        run: |
+          pnpm store prune
+          pnpm install --no-frozen-lockfile
 
       # 5. Forzar la compilación saltándose el chequeo estricto que falla
       - name: Build project
