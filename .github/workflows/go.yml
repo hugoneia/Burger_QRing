@@ -21,10 +21,11 @@ jobs:
         with:
           node-version: '24'
 
-      # 3. Instalar pnpm en el entorno virtual
+      # 3. Instalar pnpm especificando la versión para que no falle
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
+          version: 9             # <--- Añadimos esto para solucionar el error
           run_install: false
 
       # 4. Instalar dependencias limpiando tipos antiguos
