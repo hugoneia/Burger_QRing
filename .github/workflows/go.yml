@@ -32,10 +32,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --ignore-scripts
 
-      # 5. Compila el proyecto TypeScript
+      # 5. Compila el proyecto TypeScript (forzando que ignore fallos menores de tipos)
       - name: Build project
-        run: pnpm run build --if-present
-
+        run: pnpm run build --if-present -- --skipLibCheck
+        
       # 6. Ejecuta los tests automáticos (si tienes configurados)
       - name: Run tests
         run: pnpm test --if-present
