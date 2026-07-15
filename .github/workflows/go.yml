@@ -57,4 +57,4 @@ jobs:
       - name: Build APK (EAS Build)
         run: |
           cd artifacts/mobile
-          pnpm eas build --platform android --profile preview --non-interactive
+          eas build --platform android --profile preview --non-interactive
