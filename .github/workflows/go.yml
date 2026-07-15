@@ -53,8 +53,10 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      # 7. Disparar la creación automática de tu APK en la nube de Expo
+      # 7. Forzar la vinculación del proyecto y disparar la creación del APK
       - name: Build APK (EAS Build)
         run: |
           cd artifacts/mobile
+          # Vinculamos a la fuerza el ID del proyecto antes de compilar
+          eas init --id "bd51507e-7270-4923-8b4d-81351a516a8a" --non-interactive
           eas build --platform android --profile preview --non-interactive
