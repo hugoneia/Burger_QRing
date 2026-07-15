@@ -37,6 +37,9 @@ jobs:
         run: |
           # Modificamos temporalmente el comando de compilación para saltarnos el typecheck problemático
           pnpm run build --if-present || pnpm -r --if-present run build
+        env:
+          PORT: 3000
+          EXPO_PUBLIC_DOMAIN: localhost
 
       # 6. Ejecuta los tests automáticos (si tienes configurados)
       - name: Run tests
