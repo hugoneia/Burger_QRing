@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "BK Free Drink",
-    "slug": "bkfreedrink",
+    "slug": "bk-free-drink",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
