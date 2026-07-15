@@ -38,10 +38,10 @@ jobs:
           pnpm store prune
           pnpm install --no-frozen-lockfile
 
-      # 5. Compilar el proyecto raíz
+      # 5. Compilar el proyecto raíz de forma limpia y recursiva
       - name: Build workspace project
         run: |
-          pnpm run build --if-present
+          pnpm -r --if-present run build
         env:
           PORT: 3000
           EXPO_PUBLIC_DOMAIN: localhost
