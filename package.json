@@ -16,9 +16,7 @@
     "prettier": "^3.9.5",
     "typescript": "~5.9.3"
   },
-  "pnpm": {
-    "overrides": {
-      "@types/react": "19.1.17"
-    }
+  "overrides": {
+    "@types/react": "19.1.17"
   }
 }
