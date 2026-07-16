@@ -145,7 +145,7 @@ export default function ScannerScreen() {
           onBarcodeScanned={manualOpen ? undefined : handleBarcodeScanned}
         />
       ) : (
-        <View style={[Sheet.absoluteFill, { backgroundColor: colors.background }]} />
+        <View style={[StyleSheet.absoluteFill, { backgroundColor: colors.background }]} />
       )}
 
       {hasCamera && (
@@ -189,7 +189,7 @@ export default function ScannerScreen() {
             backgroundColor: colors.card,
             borderColor: colors.border,
             // Usamos un padding más generoso (24px) cuando el teclado esté abierto para que los botones respiren
-            paddingBottom: isKeyboardActive ? 24 : insets.bottom + 20,
+            paddingBottom: isKeyboardActive ? 35 : insets.bottom + 20,
             bottom: bottomPosition,
           },
         ]}
@@ -279,18 +279,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(11,15,14,0.55)',
   },
   scannerWrapper: {
-    width: 260, // Ajustado al tamaño de altura del ScannerFrame
+    width: 260,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
   },
   byText: {
     position: 'absolute',
-    top: -22, // Distancia de separación por encima del marco (puedes ajustarla)
+    top: -22,
     fontSize: 10,
     fontWeight: '800',
-    color: '#E7F5EF22',
-    letterSpacing: 2, // Le da un toque más limpio al texto pequeño
+    color: '#E7F5EF11',
+    letterSpacing: 2,
     textAlign: 'center',
   },
   overlayBottomDim: {
