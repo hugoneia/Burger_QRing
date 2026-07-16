@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, Text, TextInput, View, Modal } from 'react-native';
 import { KeyboardAwareScrollViewCompat } from '@/components/KeyboardAwareScrollViewCompat';
 import { useLocalSearchParams, router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
@@ -14,6 +14,7 @@ export default function ResultScreen() {
   const params = useLocalSearchParams<{ content?: string }>();
   const original = params.content ?? '';
   const [content, setContent] = useState(original);
+  const [infoVisible, setInfoVisible] = useState(false);
 
   const structured = useMemo(() => parseStructuredCode(content), [content]);
   const isEdited = content !== original;
@@ -51,7 +52,69 @@ export default function ResultScreen() {
       keyboardShouldPersistTaps="handled"
     >
       <View style={styles.section}>
-        <Text style={[styles.sectionLabel, { color: colors.mutedForeground }]}>CONTENIDO</Text>
+        <View style={styles.titleContainer}>
+          <Text style={[styles.sectionLabel, { color: colors.mutedForeground }]}>CONTENIDO</Text>
+          <Pressable 
+            onPress={() => setInfoVisible(true)} 
+            style={styles.infoButton}
+            testID="info-button"
+          >
+            <Feather name="info" size={16} color={colors.primary} />
+          </Pressable>
+        </View>
+
+        {/* Modal de información estructurada */}
+        <Modal
+          visible={infoVisible}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setInfoVisible(false)}
+        >
+          <Pressable 
+            style={styles.modalOverlay} 
+            onPress={() => setInfoVisible(false)}
+          >
+            <View 
+              style={[
+                styles.modalContent,
+                {
+                  backgroundColor: colors.card,
+                  borderColor: colors.border,
+                  borderRadius: colors.radius,
+                }
+              ]}
+            >
+              <Text style={styles.infoTextParagraph}>
+                <Text style={{ color: colors.foreground }}>
+                  11111,222222222,33333333333333,44444444444444444444444444444444
+                </Text>
+              </Text>
+              <Text style={styles.infoTextParagraph}>
+                <Text style={{ color: colors.mutedForeground }}>----------------------------------------</Text>
+              </Text>
+              <Text style={styles.infoTextParagraph}>
+                <Text style={{ color: colors.foreground, fontWeight: '600' }}>1</Text>
+                <Text style={{ color: colors.mutedForeground }}>: ID establecimiento BK</Text>
+              </Text>
+
+              <Text style={styles.infoTextParagraph}>
+                <Text style={{ color: colors.foreground, fontWeight: '600' }}>2</Text>
+                <Text style={{ color: colors.mutedForeground }}>: ID transacción + Nº pedido</Text>
+              </Text>
+
+              <Text style={styles.infoTextParagraph}>
+                <Text style={{ color: colors.foreground, fontWeight: '600' }}>3</Text>
+                <Text style={{ color: colors.mutedForeground }}>: Fecha-Hora (YYYYMMDDhhmmss)</Text>
+              </Text>
+
+              <Text style={styles.infoTextParagraph}>
+                <Text style={{ color: colors.foreground, fontWeight: '600' }}>4</Text>
+                <Text style={{ color: colors.mutedForeground }}>: hash MD5</Text>
+              </Text>
+            </View>
+          </Pressable>
+        </Modal>
+
         <TextInput
           value={content}
           onChangeText={setContent}
@@ -70,9 +133,6 @@ export default function ResultScreen() {
           testID="content-input"
         />
         <View style={styles.inputFooter}>
-          <Text style={[styles.charCount, { color: colors.mutedForeground }]}>
-            {content.length} caracteres
-          </Text>
           {isEdited && (
             <Pressable onPress={handleReset} style={styles.resetLink} testID="reset-button">
               <Feather name="rotate-ccw" size={13} color={colors.primary} />
@@ -133,6 +193,17 @@ const styles = StyleSheet.create({
   },
   section: {
     gap: 10,
+    position: 'relative', // Importante para posicionar elementos respecto a la sección
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  infoButton: {
+    padding: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   sectionLabel: {
     fontSize: 12,
@@ -143,8 +214,28 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 14,
     fontSize: 15,
-    minHeight: 110,
+    minHeight: 60,
     textAlignVertical: 'top',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    paddingHorizontal: 20,
+    paddingTop: 110, // Alineación exacta para que se dibuje encima de la sección "Contenido"
+  },
+  modalContent: {
+    borderWidth: 1,
+    padding: 14,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  infoTextParagraph: {
+    fontSize: 15,
+    lineHeight: 18,
+    marginBottom: 4,
   },
   inputFooter: {
     flexDirection: 'row',
