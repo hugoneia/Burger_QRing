@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import {
   Keyboard,
   Linking,
@@ -25,6 +25,25 @@ export default function ScannerScreen() {
   const [manualOpen, setManualOpen] = useState(false);
   const [manualText, setManualText] = useState('');
   const scannedRef = useRef(false);
+
+  // Estado para controlar dinámicamente la altura del teclado
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      (e) => setKeyboardHeight(e.endCoordinates.height)
+    );
+    const hideSubscription = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      () => setKeyboardHeight(0)
+    );
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   const goToResult = useCallback((content: string) => {
     if (!content.trim() || scannedRef.current) return;
@@ -109,6 +128,12 @@ export default function ScannerScreen() {
 
   const hasCamera = permission?.granted;
 
+  // Calculamos la posición del bloque inferior
+  const isKeyboardActive = keyboardHeight > 0;
+  // Añadimos un pequeño extra (offset) de 20px para que los botones floten sobre el teclado con holgura
+  const keyboardOffset = 20; 
+  const bottomPosition = isKeyboardActive ? keyboardHeight + keyboardOffset : 0;
+
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {hasCamera ? (
@@ -120,7 +145,7 @@ export default function ScannerScreen() {
           onBarcodeScanned={manualOpen ? undefined : handleBarcodeScanned}
         />
       ) : (
-        <View style={[StyleSheet.absoluteFill, { backgroundColor: colors.background }]} />
+        <View style={[Sheet.absoluteFill, { backgroundColor: colors.background }]} />
       )}
 
       {hasCamera && (
@@ -128,11 +153,14 @@ export default function ScannerScreen() {
           <View style={styles.overlayDim} />
           <View style={styles.overlayCenterRow}>
             <View style={styles.overlayDimSide} />
-            <ScannerFrame active={!manualOpen} />
+            <View style={styles.scannerWrapper}>
+              <Text style={styles.byText}>by @hug0nES</Text>
+              <ScannerFrame active={!manualOpen} />
+            </View>
             <View style={styles.overlayDimSide} />
           </View>
           <View style={styles.overlayBottomDim}>
-            <Text style={styles.helperText}>Encuadra un código QR dentro del marco</Text>
+            <Text style={styles.helperText}>Encuadra el QR "Rellena tu bebida" de tu ticket</Text>
           </View>
         </View>
       )}
@@ -160,7 +188,9 @@ export default function ScannerScreen() {
           {
             backgroundColor: colors.card,
             borderColor: colors.border,
-            paddingBottom: insets.bottom + 20,
+            // Usamos un padding más generoso (24px) cuando el teclado esté abierto para que los botones respiren
+            paddingBottom: isKeyboardActive ? 24 : insets.bottom + 20,
+            bottom: bottomPosition,
           },
         ]}
       >
@@ -247,6 +277,21 @@ const styles = StyleSheet.create({
   overlayDimSide: {
     flex: 1,
     backgroundColor: 'rgba(11,15,14,0.55)',
+  },
+  scannerWrapper: {
+    width: 260, // Ajustado al tamaño de altura del ScannerFrame
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  byText: {
+    position: 'absolute',
+    top: -22, // Distancia de separación por encima del marco (puedes ajustarla)
+    fontSize: 10,
+    fontWeight: '800',
+    color: '#E7F5EF22',
+    letterSpacing: 2, // Le da un toque más limpio al texto pequeño
+    textAlign: 'center',
   },
   overlayBottomDim: {
     flex: 1,
@@ -339,7 +384,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: 0,
     borderTopWidth: 1,
     paddingHorizontal: 20,
     paddingTop: 18,
