@@ -48,7 +48,7 @@ export function ScannerFrame({ active }: { active: boolean }) {
         <View style={[styles.corner, styles.bottomLeft, { borderColor: colors.primary }]} />
         <View style={[styles.corner, styles.bottomRight, { borderColor: colors.primary }]} />
         <Animated.View
-          style={[styles.scanLine, { backgroundColor: colors.primary, shadowColor: colors.primary }, lineStyle]}
+          /* style={[styles.scanLine, { backgroundColor: colors.primary, shadowColor: colors.primary }, lineStyle]} */
         />
       </View>
     </View>
