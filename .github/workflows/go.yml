@@ -1,4 +1,4 @@
-name: CI & EAS Android Build
+name: BK Free Drink v1
 
 on:
   push:
