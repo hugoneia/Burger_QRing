@@ -8,6 +8,9 @@ on:
 
 env:
   ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: "true"
+  # Forzamos a Node a usar IPv4 de forma nativa para evitar retardos locales en el puerto 8081
+  NODE_OPERATION_QUALITY: "ipv4first"
+  NODE_OPTIONS: "--dns-result-order=ipv4first"
 
 jobs:
   build:
@@ -51,13 +54,15 @@ jobs:
             git push
           fi
 
-      # 5. Compilar el proyecto raíz de forma limpia y recursiva
+      # 5. Compilar el proyecto raíz de forma limpia y recursiva (Con memoria ampliada)
       - name: Build workspace project
         run: |
           pnpm -r --if-present run build
         env:
           PORT: 3000
           EXPO_PUBLIC_DOMAIN: localhost
+          # MODIFICACIÓN: Le damos 4GB de RAM a Node para evitar el colapso (HTTP 500) en el 98%
+          NODE_OPTIONS: "--max-old-space-size=4096 --dns-result-order=ipv4first"
 
       # 6. Configurar la herramienta de EAS (Expo) en el servidor de GitHub
       - name: Setup EAS CLI
