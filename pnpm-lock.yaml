@@ -2722,25 +2722,25 @@ packages:
       '@types/react':
         optional: true
 
-  '@react-navigation/bottom-tabs@7.18.8':
-    resolution: {integrity: sha512-7KCsBtwCRwQQSTEw9SLglZCEkxWc+EqgdRKyUOgII+6+xEnemOyg8aDlnLIM2yk9ip6uE+Oxvm0jdpQU2vsu2w==}
+  '@react-navigation/bottom-tabs@7.18.10':
+    resolution: {integrity: sha512-9UERfB29NDLLkf2v/1kPysfIT0DGF9n9WzCcxMklZ8dn3psShQYDsUFN95mK/OZWqQ6w/qHX4pEP3hqcRrLvdA==}
     peerDependencies:
-      '@react-navigation/native': ^7.3.8
+      '@react-navigation/native': ^7.3.10
       react: '>= 18.2.0'
       react-native: '*'
       react-native-safe-area-context: '>= 4.0.0'
       react-native-screens: '>= 4.0.0'
 
-  '@react-navigation/core@7.21.5':
-    resolution: {integrity: sha512-3hpV7uR41LBW+GHDoLhztZCb/i5ySRJISZ/rez4d7DCHSZo6ej4gNxYclaS6LRguoLiKG7SOCNa6O390AQklZQ==}
+  '@react-navigation/core@7.21.7':
+    resolution: {integrity: sha512-Z/L+IX6035XLHhGcQUgKdQzizh2XUuBjF6yZmxgamD/wRr/DbH+KuaD0hNikrHge/cHNRovlZ3gSChElGVuHlQ==}
     peerDependencies:
       react: '>= 18.2.0'
 
-  '@react-navigation/elements@2.9.30':
-    resolution: {integrity: sha512-2isleieiRMmP4WNMV2Q1u3qP1M47ZqsJ2hJ/Og11FeKXK8YmUTHya7PW7ecsgAh2CXKTxAcbfJDFTSvq2D++Tw==}
+  '@react-navigation/elements@2.9.32':
+    resolution: {integrity: sha512-sM04aRaAu3Fiqi+Q4dviv+rJ5VTLmJ6ZHQSA08cMSx1BXc7jdrZ40+laLxmNOPoWHgCv3k7KcAXp4HyB+nzQdw==}
     peerDependencies:
       '@react-native-masked-view/masked-view': '>= 0.2.0'
-      '@react-navigation/native': ^7.3.8
+      '@react-navigation/native': ^7.3.10
       react: '>= 18.2.0'
       react-native: '*'
       react-native-safe-area-context: '>= 4.0.0'
@@ -2748,23 +2748,23 @@ packages:
       '@react-native-masked-view/masked-view':
         optional: true
 
-  '@react-navigation/native-stack@7.17.10':
-    resolution: {integrity: sha512-m1BWVEaOPX9k30DbmhsD7IlrUdl4J7Ogmo71rcNlbZQPMNB126av/nfwqB+qN7DIsiwTAnORnT+SwzD56qqD0Q==}
+  '@react-navigation/native-stack@7.18.2':
+    resolution: {integrity: sha512-9y3tRN/5vuEAgadHKtslIaDsoWXROy1tetd75aed4q/gSG9+iLZDuk5cE0STcL9om3hhQmZmR/RkTHvjMMd/ng==}
     peerDependencies:
-      '@react-navigation/native': ^7.3.8
+      '@react-navigation/native': ^7.3.10
       react: '>= 18.2.0'
       react-native: '*'
       react-native-safe-area-context: '>= 4.0.0'
       react-native-screens: '>= 4.0.0'
 
-  '@react-navigation/native@7.3.8':
-    resolution: {integrity: sha512-zHmQcxWBT8GOwsofEOmHqpdM5twkwE/esa9JFGlW4hpXeQTTe/dRcPSLjwsvePtolbDKz0YZbK+I5KrW3j63LQ==}
+  '@react-navigation/native@7.3.10':
+    resolution: {integrity: sha512-8MLJc6T72nbiJYg0bVictXlPSJAVJVPLowncxMmixyU3pAsxKGnAoLH9FhN91l1DwGfc5mxJzVEQZ/EmNILrRw==}
     peerDependencies:
       react: '>= 18.2.0'
       react-native: '*'
 
-  '@react-navigation/routers@7.6.0':
-    resolution: {integrity: sha512-lblhDXfS75jLc7G2K7BZGM+7cjqQXk13X/MA4fq/12r62zM+fBhhreLzYflSitrDDXFRJpSvJXy0ziiGU04Xow==}
+  '@react-navigation/routers@7.6.2':
+    resolution: {integrity: sha512-cYzWE/+kcX6RAaX1/peL07f4aIpxeE7uNDr89qJpfGuVz3WHs9dGE1QwbCyCK95fVYn1tvsOmbXbvR0o43uqKQ==}
 
   '@replit/connectors-sdk@0.4.1':
     resolution: {integrity: sha512-iw0uy95+Qul8MPc/bBo8hBfYk1wm6RpBZ9sHyCpcA9A9T4zcUT9deSQxdyMyI0w3sv3+5uGmdfq1TpFTMrjD1g==}
@@ -2903,28 +2903,28 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@scalar/helpers@0.9.1':
-    resolution: {integrity: sha512-UKSLIPfN++f+zzbsZ+F6I0lNrR4yX4PtokjHgGwGiHapxT5VJqAF4zFTIP2KCd27XG7KnAIA7qq62O4xRBxc6w==}
+  '@scalar/helpers@0.9.2':
+    resolution: {integrity: sha512-hjyMpMZjTBZQhyByZmz5oUgRKUQJO5V5AOiJxsVEGbUmgA7sJRQeTrXLB+BEwzaKS5nm2opJeNyMBYLFNK4hiQ==}
     engines: {node: '>=22'}
 
-  '@scalar/json-magic@0.12.18':
-    resolution: {integrity: sha512-3oZr+jUUiwD3C+x2CROBtlyIUnwt9ScRhFfczuOTPZlD7Pnb5cyTTfkiHbxxU4qd66ij0Z3JA4X/Nj0OADyEiA==}
+  '@scalar/json-magic@0.12.19':
+    resolution: {integrity: sha512-1T4QoFYZ1nKt25xFeHtghAuZzaLq2X4CpCSLFXG0Fjcz6K2HIZqo+RtywfI0WD8RRRRgS34keo7X4Gv1BQUNoQ==}
     engines: {node: '>=22'}
 
-  '@scalar/openapi-parser@0.28.9':
-    resolution: {integrity: sha512-AYmqO7dR6zc1TSVhW5BpwY0nUMfG5JuF85/8YXn5ZXcCvjgoJu8dbxX52vIGK9rRwSn07HXCdKk7KPIF4xfOTA==}
+  '@scalar/openapi-parser@0.28.10':
+    resolution: {integrity: sha512-jn3ftvtNTcWOgxf7XVn9CvJGMjFS7QU1b6FiGmibzAlR/6pOP3Ei7sBBnfIY4PBwHjHgMAGBoGApfOV8h75gPQ==}
     engines: {node: '>=22'}
 
   '@scalar/openapi-types@0.8.0':
     resolution: {integrity: sha512-WmaxVSfvY5K/TwcG2B2TU1WOe1As1uc2s7myswtP6dBlcjU3hM08SApxv/jmyGaCE8t4gO5BBhmHY4pDUfmr2g==}
     engines: {node: '>=22'}
 
-  '@scalar/openapi-types@0.9.2':
-    resolution: {integrity: sha512-J0SZkNPgCrsFN0Rv8sRqZpDOQcRV44TCT82LsQcyWmcglTr7qtXukDmMlIyXs7JDd+DoPLbT2ea65bEHRs2W2g==}
+  '@scalar/openapi-types@0.9.3':
+    resolution: {integrity: sha512-34qglt5jSo55iZfH9i7EhjQCdE0Po2xZeh8wytQKolSnXrxsYMSyFDJEBxz1Gaew4on9N3XIWsd0QpwKVA5CSA==}
     engines: {node: '>=22'}
 
-  '@scalar/openapi-upgrader@0.2.10':
-    resolution: {integrity: sha512-FRYwCl4IXRi7yAF5/3Jho0jc2akTZfr/vRTYMjhm+96Fq0LaEuHJAvPcSkkU+j3IWGie6LaCQMZTngcSjoIzgA==}
+  '@scalar/openapi-upgrader@0.2.11':
+    resolution: {integrity: sha512-eYEFBO8mZfgXEO/hv8rdL5OA4oOB8orFT5kXNK4I/x9xca2D7A4BteuFXqRaw9lE1CIjtG+StlAUYVz5omTXew==}
     engines: {node: '>=22'}
 
   '@sec-ant/readable-stream@0.4.1':
@@ -3957,8 +3957,8 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  electron-to-chromium@1.5.392:
-    resolution: {integrity: sha512-1yQq3VQCZRwsnYc67Oc+1fge6Lwtn0hzi6zmEVkB61Zx21kTbwJAW4dFLadl5Rc1tKhG/kSpYXnfiAhu0f0a1g==}
+  electron-to-chromium@1.5.393:
+    resolution: {integrity: sha512-kiDJdIUawuEIcp9XoICKp1iTYDEbgguIPq526N1Q7jIQDeQ3CqoMx71025PI/7E48Ddtw2HuWsVjY7afEgNxmg==}
 
   embla-carousel-react@8.6.0:
     resolution: {integrity: sha512-0/PjqU7geVmo6F734pmPqpyHqiM99olvyecY7zdweCw+6tKEXnrE90pBiBbMMU8s5tICemzpQ3hi5EpxzGW+JA==}
@@ -6025,8 +6025,10 @@ packages:
     resolution: {integrity: sha512-WjlahMgHmCJpqzU8bIBy4qtsZdU9lRlcZE3Lvyej6t4tuOuv1vk57OW3MBrj6hXBFx/nNoC9MPMTcr5YA7NQbg==}
     engines: {node: '>=6'}
 
-  standard-navigation@0.0.7:
-    resolution: {integrity: sha512-NCGLCNyuXrFOkGHxdNZFnpsehGtiq1oXbPhKl7ZuxFO5J//H2evqqOchmD4YwEUJnkjO4kH9Xp4hQX6hdAYCKQ==}
+  standard-navigation@0.0.8:
+    resolution: {integrity: sha512-TyVbo7INUDWtsUWDFn8RR7kwR87U0S4xHfLfbbnyeC581TmmyqQ+eM+nPw8rQTSD8QitRVcYfPaSHr/QJiUy1g==}
+    peerDependencies:
+      react: '*'
 
   statuses@1.5.0:
     resolution: {integrity: sha512-OpZ3zP+jT1PI7I8nemJX4AKmAX070ZkYPVWV/AaKTJl+tXCTGyVdC1a4SL8RUQYEwk/f34ZX8UTykN68FwrqAA==}
@@ -9195,10 +9197,10 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.1.17
 
-  '@react-navigation/bottom-tabs@7.18.8(@react-navigation/native@7.3.8(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-screens@4.16.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
+  '@react-navigation/bottom-tabs@7.18.10(@react-navigation/native@7.3.10(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-screens@4.16.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
-      '@react-navigation/elements': 2.9.30(@react-navigation/native@7.3.8(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
-      '@react-navigation/native': 7.3.8(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+      '@react-navigation/elements': 2.9.32(@react-navigation/native@7.3.10(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+      '@react-navigation/native': 7.3.10(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       color: 4.2.3
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0)
@@ -9208,9 +9210,9 @@ snapshots:
     transitivePeerDependencies:
       - '@react-native-masked-view/masked-view'
 
-  '@react-navigation/core@7.21.5(react@19.1.0)':
+  '@react-navigation/core@7.21.7(react@19.1.0)':
     dependencies:
-      '@react-navigation/routers': 7.6.0
+      '@react-navigation/routers': 7.6.2
       escape-string-regexp: 4.0.0
       fast-deep-equal: 3.1.3
       nanoid: 3.3.16
@@ -9220,9 +9222,9 @@ snapshots:
       use-latest-callback: 0.2.6(react@19.1.0)
       use-sync-external-store: 1.6.0(react@19.1.0)
 
-  '@react-navigation/elements@2.9.30(@react-navigation/native@7.3.8(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
+  '@react-navigation/elements@2.9.32(@react-navigation/native@7.3.10(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
-      '@react-navigation/native': 7.3.8(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+      '@react-navigation/native': 7.3.10(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       color: 4.2.3
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0)
@@ -9230,10 +9232,10 @@ snapshots:
       use-latest-callback: 0.2.6(react@19.1.0)
       use-sync-external-store: 1.6.0(react@19.1.0)
 
-  '@react-navigation/native-stack@7.17.10(@react-navigation/native@7.3.8(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-screens@4.16.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
+  '@react-navigation/native-stack@7.18.2(@react-navigation/native@7.3.10(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-screens@4.16.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
-      '@react-navigation/elements': 2.9.30(@react-navigation/native@7.3.8(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
-      '@react-navigation/native': 7.3.8(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+      '@react-navigation/elements': 2.9.32(@react-navigation/native@7.3.10(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+      '@react-navigation/native': 7.3.10(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       color: 4.2.3
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0)
@@ -9244,18 +9246,18 @@ snapshots:
     transitivePeerDependencies:
       - '@react-native-masked-view/masked-view'
 
-  '@react-navigation/native@7.3.8(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
+  '@react-navigation/native@7.3.10(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
-      '@react-navigation/core': 7.21.5(react@19.1.0)
+      '@react-navigation/core': 7.21.7(react@19.1.0)
       escape-string-regexp: 4.0.0
       fast-deep-equal: 3.1.3
       nanoid: 3.3.16
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0)
-      standard-navigation: 0.0.7
+      standard-navigation: 0.0.8(react@19.1.0)
       use-latest-callback: 0.2.6(react@19.1.0)
 
-  '@react-navigation/routers@7.6.0':
+  '@react-navigation/routers@7.6.2':
     dependencies:
       nanoid: 3.3.16
 
@@ -9352,20 +9354,20 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.62.2':
     optional: true
 
-  '@scalar/helpers@0.9.1': {}
+  '@scalar/helpers@0.9.2': {}
 
-  '@scalar/json-magic@0.12.18':
+  '@scalar/json-magic@0.12.19':
     dependencies:
-      '@scalar/helpers': 0.9.1
+      '@scalar/helpers': 0.9.2
       pathe: 2.0.3
       yaml: 2.9.0
 
-  '@scalar/openapi-parser@0.28.9':
+  '@scalar/openapi-parser@0.28.10':
     dependencies:
-      '@scalar/helpers': 0.9.1
-      '@scalar/json-magic': 0.12.18
-      '@scalar/openapi-types': 0.9.2
-      '@scalar/openapi-upgrader': 0.2.10
+      '@scalar/helpers': 0.9.2
+      '@scalar/json-magic': 0.12.19
+      '@scalar/openapi-types': 0.9.3
+      '@scalar/openapi-upgrader': 0.2.11
       ajv: 8.20.0
       ajv-draft-04: 1.0.0(ajv@8.20.0)
       ajv-formats: 3.0.1
@@ -9375,11 +9377,11 @@ snapshots:
 
   '@scalar/openapi-types@0.8.0': {}
 
-  '@scalar/openapi-types@0.9.2': {}
+  '@scalar/openapi-types@0.9.3': {}
 
-  '@scalar/openapi-upgrader@0.2.10':
+  '@scalar/openapi-upgrader@0.2.11':
     dependencies:
-      '@scalar/openapi-types': 0.9.2
+      '@scalar/openapi-types': 0.9.3
 
   '@sec-ant/readable-stream@0.4.1': {}
 
@@ -9973,7 +9975,7 @@ snapshots:
     dependencies:
       baseline-browser-mapping: 2.10.43
       caniuse-lite: 1.0.30001806
-      electron-to-chromium: 1.5.392
+      electron-to-chromium: 1.5.393
       node-releases: 2.0.51
       update-browserslist-db: 1.2.3(browserslist@4.28.6)
 
@@ -10375,7 +10377,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  electron-to-chromium@1.5.392: {}
+  electron-to-chromium@1.5.393: {}
 
   embla-carousel-react@8.6.0(react@19.1.0):
     dependencies:
@@ -10700,9 +10702,9 @@ snapshots:
       '@expo/schema-utils': 0.1.9
       '@radix-ui/react-slot': 1.2.0(@types/react@19.1.17)(react@19.1.0)
       '@radix-ui/react-tabs': 1.1.17(@types/react-dom@19.1.11(@types/react@19.1.17))(@types/react@19.1.17)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@react-navigation/bottom-tabs': 7.18.8(@react-navigation/native@7.3.8(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-screens@4.16.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
-      '@react-navigation/native': 7.3.8(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
-      '@react-navigation/native-stack': 7.17.10(@react-navigation/native@7.3.8(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-screens@4.16.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+      '@react-navigation/bottom-tabs': 7.18.10(@react-navigation/native@7.3.10(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-screens@4.16.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+      '@react-navigation/native': 7.3.10(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+      '@react-navigation/native-stack': 7.18.2(@react-navigation/native@7.3.10(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-screens@4.16.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       client-only: 0.0.1
       debug: 4.4.3
       escape-string-regexp: 4.0.0
@@ -11991,8 +11993,8 @@ snapshots:
       '@orval/solid-start': 8.22.0(typescript@5.9.3)
       '@orval/swr': 8.22.0(typescript@5.9.3)
       '@orval/zod': 8.22.0(typescript@5.9.3)
-      '@scalar/json-magic': 0.12.18
-      '@scalar/openapi-parser': 0.28.9
+      '@scalar/json-magic': 0.12.19
+      '@scalar/openapi-parser': 0.28.10
       '@scalar/openapi-types': 0.8.0
       chokidar: 5.0.0
       commander: 15.0.0
@@ -12869,7 +12871,9 @@ snapshots:
     dependencies:
       type-fest: 0.7.1
 
-  standard-navigation@0.0.7: {}
+  standard-navigation@0.0.8(react@19.1.0):
+    dependencies:
+      react: 19.1.0
 
   statuses@1.5.0: {}
 
