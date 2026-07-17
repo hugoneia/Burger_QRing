@@ -23,7 +23,13 @@ export function QRCodeCard({ value }: { value: string }) {
     >
       {trimmed ? (
         <View style={styles.qrWrap}>
-          <QRCode value={trimmed} size={QR_SIZE} color="#0B0F0E" backgroundColor="#FFFFFF" />
+          <QRCode 
+            value={trimmed} 
+            size={QR_SIZE} 
+            color="#0B0F0E" 
+            backgroundColor="#FFFFFF" 
+            ecl="L" // Forza el nivel de corrección de errores a Bajo (Low) para igualar el patrón del ticket
+          />
         </View>
       ) : (
         <View style={[styles.placeholder, { width: QR_SIZE, height: QR_SIZE }]}>
