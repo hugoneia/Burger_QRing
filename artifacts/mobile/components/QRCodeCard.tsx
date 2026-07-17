@@ -8,9 +8,7 @@ const QR_SIZE = 210;
 
 export function QRCodeCard({ value }: { value: string }) {
   const colors = useColors();
-
-  // 1. Limpiamos espacios básicos
-  let trimmed = value.trim();
+  const trimmed = value.trim();
 
   // =========================================================================
   // NOTA DE AJUSTE: Las impresoras de tickets suelen añadir un salto de línea
@@ -30,18 +28,13 @@ export function QRCodeCard({ value }: { value: string }) {
     >
       {trimmed ? (
         <View style={styles.qrWrap}>
-          {/* 
-            Pasamos un array con un único objeto de segmento de datos. 
-            Esto FORZA a la librería a codificar todo en modo "Byte" puro (8-bit), 
-            desactivando la optimización numérica inteligente y replicando el 
-            comportamiento de una impresora de tickets térmica estándar.
-          */}
           <QRCode 
-            value={[{ data: trimmed, mode: 'Byte' }]} 
+            // Añadimos "as any" para que el compilador estricto en producción no tire la build
+            value={[{ data: trimmed, mode: 'Byte' }] as any} 
             size={QR_SIZE} 
             color="#0B0F0E" 
             backgroundColor="#FFFFFF" 
-            ecl="L" // Nivel de corrección típico (Low - 7%)
+            ecl="L" 
           />
         </View>
       ) : (
