@@ -76,17 +76,16 @@ function getDeploymentDomain() {
 }
 
 function prepareDirectories(timestamp) {
-  console.log('Preparing build directories...');
+  console.log('Preparing build directories (Only Android)...');
 
   const staticBuild = path.join(projectRoot, 'static-build');
   if (fs.existsSync(staticBuild)) {
     fs.rmSync(staticBuild, { recursive: true });
   }
 
+  // MODIFICADO: Eliminados los directorios de ios
   const dirs = [
-    path.join(staticBuild, timestamp, '_expo', 'static', 'js', 'ios'),
     path.join(staticBuild, timestamp, '_expo', 'static', 'js', 'android'),
-    path.join(staticBuild, 'ios'),
     path.join(staticBuild, 'android'),
   ];
 
@@ -283,22 +282,18 @@ async function downloadManifest(platform) {
 }
 
 async function downloadBundlesAndManifests(timestamp) {
-  console.log('Downloading bundles and manifests...');
+  console.log('Downloading bundles and manifests (Only Android)...');
   console.log('This may take several minutes for production builds...');
 
   try {
-    // Bundles are sequential — Metro can't handle both platforms simultaneously
-    // without stalling. Manifests are cheap and run in parallel after.
-    await downloadBundle('ios', timestamp);
+    // MODIFICADO: Eliminada la descarga secuencial del bundle de ios
     await downloadBundle('android', timestamp);
 
-    const [iosManifest, androidManifest] = await Promise.all([
-      downloadManifest('ios'),
-      downloadManifest('android'),
-    ]);
+    // MODIFICADO: Descargamos únicamente el manifiesto de Android
+    const androidManifest = await downloadManifest('android');
 
     console.log('All downloads completed successfully');
-    return { ios: iosManifest, android: androidManifest };
+    return { android: androidManifest };
   } catch (error) {
     exitWithError(`Download failed: ${error.message}`);
   }
@@ -306,19 +301,9 @@ async function downloadBundlesAndManifests(timestamp) {
 
 function extractAssets(timestamp) {
   const staticBuild = path.join(projectRoot, 'static-build');
+  
+  // MODIFICADO: Eliminada la lectura del archivo bundle de ios
   const bundles = {
-    ios: fs.readFileSync(
-      path.join(
-        staticBuild,
-        timestamp,
-        '_expo',
-        'static',
-        'js',
-        'ios',
-        'bundle.js',
-      ),
-      'utf-8',
-    ),
     android: fs.readFileSync(
       path.join(
         staticBuild,
@@ -368,7 +353,7 @@ function extractAssets(timestamp) {
     }
   };
 
-  extractFromBundle(bundles.ios, 'ios');
+  // MODIFICADO: Solo extrae recursos desde el paquete de Android
   extractFromBundle(bundles.android, 'android');
 
   return Array.from(assetsMap.values());
@@ -474,14 +459,14 @@ function updateBundleUrls(timestamp, baseUrl) {
     fs.writeFileSync(bundlePath, bundle);
   };
 
-  updateForPlatform('ios');
+  // MODIFICADO: Actualizar únicamente el bundle de Android
   updateForPlatform('android');
   console.log('Updated bundle URLs');
 }
 
 function updateManifests(manifests, timestamp, baseUrl, assetsByHash) {
   const updateForPlatform = (platform, manifest) => {
-    if (!manifest.launchAsset || !manifest.extra) {
+    if (!manifest || !manifest.launchAsset || !manifest.extra) {
       exitWithError(`Malformed manifest for ${platform}`);
     }
 
@@ -516,13 +501,13 @@ function updateManifests(manifests, timestamp, baseUrl, assetsByHash) {
     );
   };
 
-  updateForPlatform('ios', manifests.ios);
+  // MODIFICADO: Procesar y guardar el manifiesto únicamente para Android
   updateForPlatform('android', manifests.android);
   console.log('Manifests updated');
 }
 
 async function main() {
-  console.log('Building static Expo Go deployment...');
+  console.log('Building static Expo Go deployment for Android...');
 
   setupSignalHandlers();
 
