@@ -8,7 +8,7 @@ const QR_SIZE = 210;
 
 export function QRCodeCard({ value }: { value: string }) {
   const colors = useColors();
-  const trimmed = value.trim();
+  const cleanValue = value.trim() + '\n';
 
   // =========================================================================
   // NOTA DE AJUSTE: Las impresoras de tickets suelen añadir un salto de línea
@@ -19,6 +19,7 @@ export function QRCodeCard({ value }: { value: string }) {
   // trimmed = trimmed + '\r\n'; // Opción B: Salto de línea CRLF Windows
   // =========================================================================
 
+
   return (
     <View
       style={[
@@ -26,11 +27,10 @@ export function QRCodeCard({ value }: { value: string }) {
         { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius },
       ]}
     >
-      {trimmed ? (
+      {value.trim() ? (
         <View style={styles.qrWrap}>
           <QRCode 
-            // Añadimos "as any" para que el compilador estricto en producción no tire la build
-            value={[{ data: trimmed, mode: 'Byte' }] as any} 
+            value={cleanValue} 
             size={QR_SIZE} 
             color="#0B0F0E" 
             backgroundColor="#FFFFFF" 
