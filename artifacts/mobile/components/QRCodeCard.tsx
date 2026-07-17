@@ -6,13 +6,20 @@ import { Feather } from '@expo/vector-icons';
 
 const QR_SIZE = 210;
 
-/**
- * Renders the live QR preview generated from the edited content. Shows a
- * friendly placeholder when there is nothing to encode.
- */
 export function QRCodeCard({ value }: { value: string }) {
   const colors = useColors();
-  const trimmed = value.trim();
+
+  // 1. Limpiamos espacios básicos
+  let trimmed = value.trim();
+
+  // =========================================================================
+  // NOTA DE AJUSTE: Las impresoras de tickets suelen añadir un salto de línea
+  // invisible al final. Si tras aplicar este código sigue sin ser idéntico,
+  // prueba a descomentar UNA de estas dos líneas siguientes para probar:
+  //
+  // trimmed = trimmed + '\n';   // Opción A: Salto de línea LF
+  // trimmed = trimmed + '\r\n'; // Opción B: Salto de línea CRLF Windows
+  // =========================================================================
 
   return (
     <View
@@ -23,12 +30,18 @@ export function QRCodeCard({ value }: { value: string }) {
     >
       {trimmed ? (
         <View style={styles.qrWrap}>
+          {/* 
+            Pasamos un array con un único objeto de segmento de datos. 
+            Esto FORZA a la librería a codificar todo en modo "Byte" puro (8-bit), 
+            desactivando la optimización numérica inteligente y replicando el 
+            comportamiento de una impresora de tickets térmica estándar.
+          */}
           <QRCode 
-            value={trimmed} 
+            value={[{ data: trimmed, mode: 'Byte' }]} 
             size={QR_SIZE} 
             color="#0B0F0E" 
             backgroundColor="#FFFFFF" 
-            ecl="L" // Forza el nivel de corrección de errores a Bajo (Low) para igualar el patrón del ticket
+            ecl="L" // Nivel de corrección típico (Low - 7%)
           />
         </View>
       ) : (
