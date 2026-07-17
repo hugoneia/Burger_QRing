@@ -148,7 +148,7 @@ async function startMetro(expoPublicDomain, expoPublicReplId) {
 
   metroProcess = spawn(
     'pnpm',
-    ['exec', 'expo', 'start', '--no-dev', '--minify', '--localhost'],
+    ['exec', 'expo', 'start', '--no-dev', '--localhost'],
     {
       stdio: ['ignore', 'pipe', 'pipe'],
       detached: false,
@@ -194,6 +194,9 @@ async function downloadFile(url, outputPath) {
     const response = await fetch(url, { signal: controller.signal });
 
     if (!response.ok) {
+      // Intentamos extraer el stack-trace o mensaje real enviado por Metro Server
+      const errorText = await response.text().catch(() => 'No extra log info available');
+      console.error(`\n[Metro Server Error Details]:\n${errorText}\n`);
       throw new Error(`HTTP ${response.status}`);
     }
 
@@ -233,7 +236,7 @@ async function downloadBundle(platform, timestamp) {
   url.searchParams.set('dev', 'false');
   url.searchParams.set('hot', 'false');
   url.searchParams.set('lazy', 'false');
-  url.searchParams.set('minify', 'true');
+  url.searchParams.set('minify', 'false');
 
   const output = path.join(
     'static-build',
