@@ -8,9 +8,11 @@ const QR_SIZE = 210;
 
 export function QRCodeCard({ value }: { value: string }) {
   const colors = useColors();
+  
+  // Recuperamos la lógica exacta: Limpieza del string + el salto de línea nativo de la impresora de BK
   const cleanValue = value.trim() + '\n';
 
-  // =========================================================================
+ // =========================================================================
   // NOTA DE AJUSTE: Las impresoras de tickets suelen añadir un salto de línea
   // invisible al final. Si tras aplicar este código sigue sin ser idéntico,
   // prueba a descomentar UNA de estas dos líneas siguientes para probar:
@@ -18,7 +20,6 @@ export function QRCodeCard({ value }: { value: string }) {
   // trimmed = trimmed + '\n';   // Opción A: Salto de línea LF
   // trimmed = trimmed + '\r\n'; // Opción B: Salto de línea CRLF Windows
   // =========================================================================
-
 
   return (
     <View
@@ -30,11 +31,12 @@ export function QRCodeCard({ value }: { value: string }) {
       {value.trim() ? (
         <View style={styles.qrWrap}>
           <QRCode 
-            value={cleanValue} 
+            // Forzamos el modo Byte nativo dentro de un array para estructurar la matriz idéntica al ticket
+            value={[{ data: cleanValue, mode: 'Byte' }]} 
             size={QR_SIZE} 
             color="#0B0F0E" 
             backgroundColor="#FFFFFF" 
-            ecl="L" 
+            ecl="M" // Volvemos al nivel de corrección medio que define el dibujo exacto
           />
         </View>
       ) : (
