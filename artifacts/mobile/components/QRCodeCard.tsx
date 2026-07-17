@@ -9,10 +9,10 @@ const QR_SIZE = 210;
 export function QRCodeCard({ value }: { value: string }) {
   const colors = useColors();
   
-  // Recuperamos la lógica exacta: Limpieza del string + el salto de línea nativo de la impresora de BK
-  const cleanValue = value.trim() + '\n';
+  // 1. Limpieza absoluta: SIN añadir saltos de línea artificiales (\n)
+  const cleanValue = value.trim();
 
- // =========================================================================
+// =========================================================================
   // NOTA DE AJUSTE: Las impresoras de tickets suelen añadir un salto de línea
   // invisible al final. Si tras aplicar este código sigue sin ser idéntico,
   // prueba a descomentar UNA de estas dos líneas siguientes para probar:
@@ -28,15 +28,16 @@ export function QRCodeCard({ value }: { value: string }) {
         { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius },
       ]}
     >
-      {value.trim() ? (
+      {cleanValue ? (
         <View style={styles.qrWrap}>
           <QRCode 
-            // Forzamos el modo Byte nativo dentro de un array para estructurar la matriz idéntica al ticket
-            value={[{ data: cleanValue, mode: 'Byte' }]} 
+            // 2. Pasamos el string limpio directamente (sin la envoltura de array ni modo Byte)
+            value={cleanValue} 
             size={QR_SIZE} 
             color="#0B0F0E" 
             backgroundColor="#FFFFFF" 
-            ecl="M" // Volvemos al nivel de corrección medio que define el dibujo exacto
+            // 3. Forzamos el nivel de corrección Bajo para lograr la cuadrícula exacta de 29x29
+            ecl="L" 
           />
         </View>
       ) : (
