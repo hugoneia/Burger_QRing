@@ -9,6 +9,7 @@ const QR_SIZE = 210;
 export function QRCodeCard({ value }: { value: string }) {
   const colors = useColors();
   
+  // Texto plano idéntico, sin alteraciones, arreglos ni añadidos raros
   const cleanValue = value ? value.trim() : '';
 
   return (
@@ -21,13 +22,11 @@ export function QRCodeCard({ value }: { value: string }) {
       {cleanValue ? (
         <View style={styles.qrWrap}>
           <QRCode 
-            // Forzamos el modo 'Byte' de manera explícita pasándolo como un objeto.
-            // Esto evita que la librería decida por su cuenta y recrea el comportamiento exacto de ayer.
-            value={[{ data: cleanValue, mode: 'Byte' }]} 
+            value={cleanValue} 
             size={QR_SIZE} 
             color="#0B0F0E" 
             backgroundColor="#FFFFFF"
-            ecl="M" // Nivel de corrección medio estándar
+            ecl="L" // Forzamos el nivel Low (L), el estándar estricto de los tickets impresos
           />
         </View>
       ) : (
