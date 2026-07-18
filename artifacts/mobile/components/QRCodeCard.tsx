@@ -9,9 +9,8 @@ const QR_SIZE = 210;
 export function QRCodeCard({ value }: { value: string }) {
   const colors = useColors();
   
-  // 1. Limpieza absoluta y conversión estricta a minúsculas para el hash MD5 final
-  // Esto garantiza que 'ada092e...' no cambie a mayúsculas internamente.
-  const cleanValue = value.trim().toLowerCase();
+  // 1. Añadimos el salto de línea obligatorio al final, en minúsculas y sin espacios laterales.
+  const cleanValue = value.trim().toLowerCase() + '\n';
 
   return (
     <View
@@ -20,16 +19,15 @@ export function QRCodeCard({ value }: { value: string }) {
         { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius },
       ]}
     >
-      {cleanValue ? (
+      {value.trim() ? (
         <View style={styles.qrWrap}>
           <QRCode 
-            // 2. Pasamos el string limpio directamente
             value={cleanValue} 
             size={QR_SIZE} 
             color="#0B0F0E" 
             backgroundColor="#FFFFFF" 
-            // 3. Forzamos el nivel M (Medium) que es el que usa Burger King por defecto en sus tickets de 29x29
-            ecl="M" 
+            // 2. Quitamos el atributo 'ecl' por completo para que la librería herede 
+            // el nivel de tolerancia nativo por defecto que encajaba los bloques.
           />
         </View>
       ) : (
