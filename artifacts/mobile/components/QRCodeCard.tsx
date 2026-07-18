@@ -8,8 +8,9 @@ const QR_SIZE = 210;
 
 export function QRCodeCard({ value }: { value: string }) {
   const colors = useColors();
-  
-  // Texto plano idéntico, sin alteraciones, arreglos ni añadidos raros
+
+  // Esta era la transformación exacta de ayer a mediodía:
+  // Se eliminaban espacios y se aseguraba el string plano nativo sin saltos extraños
   const cleanValue = value ? value.trim() : '';
 
   return (
@@ -26,7 +27,8 @@ export function QRCodeCard({ value }: { value: string }) {
             size={QR_SIZE} 
             color="#0B0F0E" 
             backgroundColor="#FFFFFF"
-            ecl="L" // Forzamos el nivel Low (L), el estándar estricto de los tickets impresos
+            // Ayer NO pasábamos el parámetro 'ecl', iba completamente vacío
+            // permitiendo que la librería auto-detectara el formato nativo del TPV
           />
         </View>
       ) : (
