@@ -148,7 +148,7 @@ async function startMetro(expoPublicDomain, expoPublicReplId) {
 
   metroProcess = spawn(
     'pnpm',
-    ['exec', 'expo', 'start', '--no-dev', '--localhost'],
+    ['exec', 'expo', 'start', '--minify', '--no-dev', '--localhost'],
     {
       stdio: ['ignore', 'pipe', 'pipe'],
       detached: false,
@@ -236,7 +236,7 @@ async function downloadBundle(platform, timestamp) {
   url.searchParams.set('dev', 'false');
   url.searchParams.set('hot', 'false');
   url.searchParams.set('lazy', 'false');
-  url.searchParams.set('minify', 'false');
+  url.searchParams.set('minify', 'true');
 
   const output = path.join(
     'static-build',
