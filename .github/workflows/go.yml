@@ -76,23 +76,17 @@ jobs:
           cd artifacts/mobile
           npx expo prebuild --platform android --no-install
 
-      # 9. Generar el Bundle de producción usando el comando nativo embebido de Expo
-      - name: Generate Production Bundle Manually (Expo Native)
-        run: |
-          cd artifacts/mobile
-          mkdir -p android/app/src/main/assets
-          npx expo export:embed --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
-
-      # 10. Compilar el APK usando Gradle (Omitiendo la tarea redundante)
+      # 9. Compilar el APK usando Gradle desde la raíz del subproyecto nativo
       - name: Build Android App (Local Gradle)
         run: |
           cd artifacts/mobile/android
           chmod +x gradlew
-          ./gradlew assembleRelease -x :app:createBundleReleaseJsAndAssets --no-daemon
+          # Usamos -p para forzar a Gradle a ejecutar el build tomando el subproyecto nativo
+          ./gradlew assembleRelease -p . --no-daemon
         env:
           _JAVA_OPTIONS: "-Xmx4096m"
 
-      # 11. Guardar el archivo APK generado para descargar
+      # 10. Guardar el archivo APK generado para descargar
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
