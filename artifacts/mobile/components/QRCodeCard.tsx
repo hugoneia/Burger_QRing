@@ -9,9 +9,17 @@ const QR_SIZE = 210;
 export function QRCodeCard({ value }: { value: string }) {
   const colors = useColors();
 
-  // Esta era la transformación exacta de ayer a mediodía:
-  // Se eliminaban espacios y se aseguraba el string plano nativo sin saltos extraños
-  const cleanValue = value ? value.trim() : '';
+  // 1. Limpiamos espacios básicos
+  let trimmed = value.trim();
+
+  // =========================================================================
+  // NOTA DE AJUSTE: Las impresoras de tickets suelen añadir un salto de línea
+  // invisible al final. Si tras aplicar este código sigue sin ser idéntico,
+  // prueba a descomentar UNA de estas dos líneas siguientes para probar:
+  //
+  // trimmed = trimmed + '\n';   // Opción A: Salto de línea LF
+  // trimmed = trimmed + '\r\n'; // Opción B: Salto de línea CRLF Windows
+  // =========================================================================
 
   return (
     <View
@@ -20,15 +28,20 @@ export function QRCodeCard({ value }: { value: string }) {
         { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius },
       ]}
     >
-      {cleanValue ? (
+      {trimmed ? (
         <View style={styles.qrWrap}>
+          {/* 
+            Pasamos un array con un único objeto de segmento de datos. 
+            Esto FORZA a la librería a codificar todo en modo "Byte" puro (8-bit), 
+            desactivando la optimización numérica inteligente y replicando el 
+            comportamiento de una impresora de tickets térmica estándar.
+          */}
           <QRCode 
-            value={cleanValue} 
+            value={[{ data: trimmed, mode: 'Byte' }]} 
             size={QR_SIZE} 
             color="#0B0F0E" 
-            backgroundColor="#FFFFFF"
-            // Ayer NO pasábamos el parámetro 'ecl', iba completamente vacío
-            // permitiendo que la librería auto-detectara el formato nativo del TPV
+            backgroundColor="#FFFFFF" 
+            ecl="L" // Nivel de corrección típico (Low - 7%)
           />
         </View>
       ) : (
