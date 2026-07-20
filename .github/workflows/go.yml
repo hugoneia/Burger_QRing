@@ -76,17 +76,15 @@ jobs:
           cd artifacts/mobile
           npx expo prebuild --platform android --no-install
 
-      # 9. Compilar el APK usando Gradle con las variables de entorno del monorrepo
+      # 9. Compilar el APK usando Gradle directamente (Metro leerá el config nuevo)
       - name: Build Android App (Local Gradle)
         run: |
           cd artifacts/mobile/android
           chmod +x gradlew
           ./gradlew assembleRelease --no-daemon
         env:
+          # Aumentamos la RAM de la JVM nativa para que compile holgadamente
           _JAVA_OPTIONS: "-Xmx4096m"
-          # Le indicamos a la tarea de React Native dónde está el root real de la app de Expo
-          PROJECT_ROOT: ${{ github.workspace }}/artifacts/mobile
-          ENTRY_FILE: src/app/index.tsx
 
       # 10. Guardar el archivo APK generado para descargar
       - name: Upload APK Artifact
