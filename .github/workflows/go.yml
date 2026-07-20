@@ -76,12 +76,12 @@ jobs:
           cd artifacts/mobile
           npx expo prebuild --platform android --no-install
 
-      # 9. Compilar el APK usando la CLI de Expo (Resuelve paths automáticamente)
+      # 9. Compilar el APK usando la CLI de Expo (Corregido sin flag conflictivo)
       - name: Build Android App (Expo Local Build)
         run: |
           cd artifacts/mobile
-          # Usamos el flag no-interactive y la variante release para compilar el APK de producción localmente
-          npx expo run:android --variant release --no-interactive
+          # Eliminado --no-interactive para evitar el CommandError
+          npx expo run:android --variant release
         env:
           _JAVA_OPTIONS: "-Xmx4096m"
 
