@@ -70,30 +70,30 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      # 8. Generar los directorios nativos de Android
+      # 8. Generar los directorios nativos de Android mediante Expo Prebuild
       - name: Run Expo Prebuild
         run: |
           cd artifacts/mobile
           npx expo prebuild --platform android --no-install
 
-      # ========================================================
-      # PASO CHIVATO: Forzar empaquetado manual para ver el error real
-      # ========================================================
-      - name: Test Expo Export Embed (Chivato de errores)
+      # 9. Generar manualmente el Bundle de producción y los Assets en la carpeta correcta
+      - name: Generate Production Bundle Manually
         run: |
           cd artifacts/mobile
-          npx expo export --platform android
+          mkdir -p android/app/src/main/assets
+          npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
 
-      # 9. Compilar el APK usando Gradle
+      # 10. Compilar el APK usando Gradle (Desactivando la tarea conflictiva duplicada)
       - name: Build Android App (Local Gradle)
         run: |
           cd artifacts/mobile/android
           chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon
+          # Omitimos la tarea conflictiva usando -x porque ya hemos inyectado el bundle arriba
+          ./gradlew assembleRelease -x :app:createBundleReleaseJsAndAssets --no-daemon
         env:
           _JAVA_OPTIONS: "-Xmx4096m"
 
-      # 10. Guardar el archivo APK generado para descargar
+      # 11. Guardar el archivo APK generado para descargar
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
