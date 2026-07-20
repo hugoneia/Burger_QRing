@@ -15,10 +15,10 @@ export default function ResultScreen() {
   const original = params.content ?? '';
   const [content, setContent] = useState(original);
   const [infoVisible, setInfoVisible] = useState(false);
-
+  
   // Guardamos la posición Y absoluta del textInput
   const [inputYPosition, setInputYPosition] = useState(110);
-
+  
   // Referencia para medir el contenedor de forma absoluta
   const sectionRef = useRef<View>(null);
 
@@ -248,10 +248,8 @@ const styles = StyleSheet.create({
   modalContent: {
     borderWidth: 1,
     padding: 14,
-    paddingTop: 19,
     fontSize: 15,
     minHeight: 60,
-    textAlignVertical: 'top',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
