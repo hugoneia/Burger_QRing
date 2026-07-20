@@ -36,7 +36,7 @@ jobs:
           version: 9
           run_install: false
 
-      # 4. Eliminar lockfile antiguo y sincronizar
+      # 4. Sincronizar y actualizar lockfile de pnpm
       - name: Sincronizar y actualizar lockfile de pnpm
         run: |
           rm -f pnpm-lock.yaml
@@ -76,13 +76,12 @@ jobs:
           cd artifacts/mobile
           npx expo prebuild --platform android --no-install
 
-      # 9. Compilar el APK usando Gradle desde la raíz del subproyecto nativo
-      - name: Build Android App (Local Gradle)
+      # 9. Compilar el APK usando la CLI de Expo (Resuelve paths automáticamente)
+      - name: Build Android App (Expo Local Build)
         run: |
-          cd artifacts/mobile/android
-          chmod +x gradlew
-          # Usamos -p para forzar a Gradle a ejecutar el build tomando el subproyecto nativo
-          ./gradlew assembleRelease -p . --no-daemon
+          cd artifacts/mobile
+          # Usamos el flag no-interactive y la variante release para compilar el APK de producción localmente
+          npx expo run:android --variant release --no-interactive
         env:
           _JAVA_OPTIONS: "-Xmx4096m"
 
