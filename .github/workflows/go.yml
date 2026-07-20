@@ -76,19 +76,18 @@ jobs:
           cd artifacts/mobile
           npx expo prebuild --platform android --no-install
 
-      # 9. Generar manualmente el Bundle de producción y los Assets en la carpeta correcta
-      - name: Generate Production Bundle Manually
+      # 9. Generar el Bundle de producción usando el comando nativo embebido de Expo
+      - name: Generate Production Bundle Manually (Expo Native)
         run: |
           cd artifacts/mobile
           mkdir -p android/app/src/main/assets
-          npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+          npx expo export:embed --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
 
-      # 10. Compilar el APK usando Gradle (Desactivando la tarea conflictiva duplicada)
+      # 10. Compilar el APK usando Gradle (Omitiendo la tarea redundante)
       - name: Build Android App (Local Gradle)
         run: |
           cd artifacts/mobile/android
           chmod +x gradlew
-          # Omitimos la tarea conflictiva usando -x porque ya hemos inyectado el bundle arriba
           ./gradlew assembleRelease -x :app:createBundleReleaseJsAndAssets --no-daemon
         env:
           _JAVA_OPTIONS: "-Xmx4096m"
