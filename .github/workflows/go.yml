@@ -9,7 +9,6 @@ on:
 env:
   ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: "true"
   NODE_OPERATION_QUALITY: "ipv4first"
-  # MODIFICACIÓN CLAVE: Inyectamos la memoria máxima directamente aquí para que afecte también al empaquetador embebido de Gradle
   NODE_OPTIONS: "--max-old-space-size=4096 --dns-result-order=ipv4first"
 
 jobs:
@@ -52,7 +51,7 @@ jobs:
             git push
           fi
 
-      # 5. Compilar el proyecto raíz con memoria ampliada
+      # 5. Compilar el proyecto raíz
       - name: Build workspace project
         run: |
           pnpm -r --if-present run build
@@ -60,7 +59,7 @@ jobs:
           PORT: 3000
           EXPO_PUBLIC_DOMAIN: localhost
 
-      # 6. Instalar Java (Requerido para compilar Android)
+      # 6. Instalar Java
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -71,20 +70,27 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      # 8. Generar los directorios nativos de Android mediante Expo Prebuild
+      # 8. Generar los directorios nativos de Android
       - name: Run Expo Prebuild
         run: |
           cd artifacts/mobile
           npx expo prebuild --platform android --no-install
 
-      # 9. Compilar el APK usando Gradle (Pasando la RAM también a las opciones de compilación nativa)
+      # ========================================================
+      # PASO CHIVATO: Forzar empaquetado manual para ver el error real
+      # ========================================================
+      - name: Test Expo Export Embed (Chivato de errores)
+        run: |
+          cd artifacts/mobile
+          npx expo export --platform android
+
+      # 9. Compilar el APK usando Gradle
       - name: Build Android App (Local Gradle)
         run: |
           cd artifacts/mobile/android
           chmod +x gradlew
           ./gradlew assembleRelease --no-daemon
         env:
-          # Evita fugas de memoria en la máquina virtual de ejecución de Java
           _JAVA_OPTIONS: "-Xmx4096m"
 
       # 10. Guardar el archivo APK generado para descargar
