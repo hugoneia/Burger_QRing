@@ -412,11 +412,11 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     gap: 6,
     borderWidth: 1,
     paddingVertical: 12,
-    paddingHorizontal: 8,
+    paddingHorizontal: 12,
   },
   actionButtonText: {
     fontSize: 13,
