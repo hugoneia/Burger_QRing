@@ -10,8 +10,9 @@ import {
   View,
 } from 'react-native';
 import { CameraView, useCameraPermissions, type BarcodeScanningResult } from 'expo-camera';
+import * as Location from 'expo-location'; // Importamos expo-location
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useColors } from '@/hooks/useColors';
@@ -21,6 +22,7 @@ export default function ScannerScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const [permission, requestPermission] = useCameraPermissions();
+  const [locationPermission, setLocationPermission] = useState<boolean | null>(null);
   const [torchOn, setTorchOn] = useState(false);
   const [manualOpen, setManualOpen] = useState(false);
   const [manualText, setManualText] = useState('');
@@ -28,6 +30,32 @@ export default function ScannerScreen() {
 
   // Estado para controlar dinámicamente la altura del teclado
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+  // Solicitamos permiso de GPS
+  const requestLocationPermission = useCallback(async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      setLocationPermission(status === 'granted');
+    } catch {
+      setLocationPermission(false);
+    }
+  }, []);
+
+  // Verificar / Pedir permisos de ubicación al montar la pantalla si la cámara está permitida
+  useEffect(() => {
+    if (permission?.granted) {
+      requestLocationPermission();
+    }
+  }, [permission?.granted, requestLocationPermission]);
+
+  // Apagar la linterna automáticamente cuando la pantalla pierda el foco
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        setTorchOn(false);
+      };
+    }, [])
+  );
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener(
@@ -45,17 +73,47 @@ export default function ScannerScreen() {
     };
   }, []);
 
-  const goToResult = useCallback((content: string) => {
+  const goToResult = useCallback(async (content: string) => {
     if (!content.trim() || scannedRef.current) return;
     scannedRef.current = true;
+    
+    setTorchOn(false);
+    setManualText(content);
+    setManualOpen(true);
+
     if (Platform.OS !== 'web') {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     }
-    router.push({ pathname: '/result', params: { content } });
+
+    // Intentamos obtener las coordenadas si hay permiso concedido
+    let latitude: number | undefined;
+    let longitude: number | undefined;
+
+    if (locationPermission) {
+      try {
+        // Usamos Balanced para obtener la posición rápido sin pausar la navegación
+        const location = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+        });
+        latitude = location.coords.latitude;
+        longitude = location.coords.longitude;
+      } catch {
+        // Si falla la ubicación (p.ej. GPS apagado), procedemos sin coordenadas
+      }
+    }
+
+    router.push({
+      pathname: '/result',
+      params: {
+        content,
+        ...(latitude && longitude ? { latitude: latitude.toString(), longitude: longitude.toString() } : {}),
+      },
+    });
+
     setTimeout(() => {
       scannedRef.current = false;
     }, 800);
-  }, []);
+  }, [locationPermission]);
 
   const handleBarcodeScanned = useCallback(
     (result: BarcodeScanningResult) => {
@@ -78,16 +136,23 @@ export default function ScannerScreen() {
     try {
       await Linking.openSettings();
     } catch {
-      // no-op — nothing actionable if this fails
+      // no-op
     }
   }, []);
+
+  const handleRequestAllPermissions = async () => {
+    if (permission?.canAskAgain) {
+      await requestPermission();
+    }
+    await requestLocationPermission();
+  };
 
   const renderPermissionGate = () => {
     if (!permission) {
       return (
         <View style={styles.centerFill}>
           <Text style={[styles.hintText, { color: colors.mutedForeground }]}>
-            Comprobando acceso a la cámara…
+            Comprobando accesos…
           </Text>
         </View>
       );
@@ -101,22 +166,22 @@ export default function ScannerScreen() {
             <Feather name="camera" size={30} color={colors.primary} />
           </View>
           <Text style={[styles.permissionTitle, { color: colors.foreground }]}>
-            Se necesita acceso a la cámara
+            Permisos requeridos
           </Text>
           <Text style={[styles.permissionBody, { color: colors.mutedForeground }]}>
             {canAsk
-              ? 'Permite el acceso a la cámara para escanear códigos QR y leer su contenido.'
-              : 'Se denegó el acceso a la cámara. Actívalo en Ajustes para empezar a escanear.'}
+              ? 'Necesitamos acceso a la cámara y a tu ubicación para escanear el QR y detectar automáticamente el restaurante más cercano.'
+              : 'Se denegó el acceso. Activa los permisos de Cámara y Ubicación en Ajustes para continuar.'}
           </Text>
           <Pressable
-            onPress={canAsk ? requestPermission : openSettings}
+            onPress={canAsk ? handleRequestAllPermissions : openSettings}
             style={({ pressed }) => [
               styles.primaryButton,
               { backgroundColor: colors.primary, opacity: pressed ? 0.85 : 1 },
             ]}
           >
             <Text style={[styles.primaryButtonText, { color: colors.primaryForeground }]}>
-              {canAsk ? 'Permitir acceso a la cámara' : 'Abrir Ajustes'}
+              {canAsk ? 'Permitir acceso' : 'Abrir Ajustes'}
             </Text>
           </Pressable>
         </View>
@@ -128,9 +193,7 @@ export default function ScannerScreen() {
 
   const hasCamera = permission?.granted;
 
-  // Calculamos la posición del bloque inferior
   const isKeyboardActive = keyboardHeight > 0;
-  // Añadimos un pequeño extra (offset) de 20px para que los botones floten sobre el teclado con holgura
   const keyboardOffset = 20; 
   const bottomPosition = isKeyboardActive ? keyboardHeight + keyboardOffset : 0;
 
@@ -188,7 +251,6 @@ export default function ScannerScreen() {
           {
             backgroundColor: colors.card,
             borderColor: colors.border,
-            // Usamos un padding más generoso (24px) cuando el teclado esté abierto para que los botones respiren
             paddingBottom: isKeyboardActive ? 35 : insets.bottom + 20,
             bottom: bottomPosition,
           },
@@ -209,7 +271,7 @@ export default function ScannerScreen() {
                   borderColor: colors.border,
                 },
               ]}
-              autoFocus
+              autoFocus={manualText === ''}
               multiline
               testID="manual-input"
             />
